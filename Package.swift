@@ -16,7 +16,7 @@ let swiftSettings: [SwiftSetting] = [
 let package = Package(
     name: "Secrets",
     platforms: [
-        .macOS(.v26),
+        .macOS(.v13),
     ],
     products: [
         .executable(
