@@ -3,7 +3,7 @@
 import PackageDescription
 
 let swiftSettings: [SwiftSetting] = [
-    .defaultIsolation(MainActor.self),
+    .defaultIsolation(nil),
     .strictMemorySafety(),
     .enableUpcomingFeature("ExistentialAny"),
     .enableUpcomingFeature("ImmutableWeakCaptures"),

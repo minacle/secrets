@@ -2,9 +2,9 @@ import ArgumentParser
 import Foundation
 import Security
 
-private nonisolated let service = "moe.minacle.secrets"
+private let service = "moe.minacle.secrets"
 
-nonisolated func delete(key: String) throws(SecretsError) {
+func delete(key: String) throws(SecretsError) {
     let query = [
         kSecClass: kSecClassGenericPassword,
         kSecAttrService: service,
@@ -20,7 +20,7 @@ nonisolated func delete(key: String) throws(SecretsError) {
     }
 }
 
-nonisolated func read(key: String) throws(SecretsError) -> String {
+func read(key: String) throws(SecretsError) -> String {
     let query = [
         kSecClass: kSecClassGenericPassword,
         kSecAttrService: service,
@@ -46,7 +46,7 @@ nonisolated func read(key: String) throws(SecretsError) -> String {
     return value
 }
 
-nonisolated func rename(oldKey: String, newKey: String) throws(SecretsError) {
+func rename(oldKey: String, newKey: String) throws(SecretsError) {
     let query = [
         kSecClass: kSecClassGenericPassword,
         kSecAttrService: service,
@@ -68,7 +68,7 @@ nonisolated func rename(oldKey: String, newKey: String) throws(SecretsError) {
     }
 }
 
-nonisolated func write(key: String, value: String) throws(SecretsError) {
+func write(key: String, value: String) throws(SecretsError) {
     let valueData = value.data(using: .utf8)!
     let query = [
         kSecClass: kSecClassGenericPassword,
