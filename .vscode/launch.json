@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Secrets}",
+            "name": "Debug secrets",
+            "target": "secrets",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug secrets"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:Secrets}",
+            "name": "Release secrets",
+            "target": "secrets",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release secrets"
+        }
+    ]
+}
