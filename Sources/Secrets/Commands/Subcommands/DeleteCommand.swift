@@ -11,7 +11,9 @@ struct DeleteCommand: ParsableCommand {
                 """,
         )
 
-    @Argument
+    @Argument(
+        help: "The key of the secret to delete.",
+    )
     var key: String
 
     func run() throws {

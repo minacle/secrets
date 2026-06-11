@@ -11,10 +11,14 @@ struct WriteCommand: ParsableCommand {
                 """,
         )
 
-    @Argument
+    @Argument(
+        help: "The key to store the secret under.",
+    )
     var key: String
 
-    @Argument
+    @Argument(
+        help: "The secret value to store.",
+    )
     var value: String
 
     func run() throws {

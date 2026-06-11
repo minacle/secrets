@@ -11,7 +11,9 @@ struct ReadCommand: ParsableCommand {
                 """,
         )
 
-    @Argument
+    @Argument(
+        help: "The key of the secret to read.",
+    )
     var key: String
 
     func run() throws {

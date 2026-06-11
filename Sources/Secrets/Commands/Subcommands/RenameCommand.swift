@@ -11,10 +11,14 @@ struct RenameCommand: ParsableCommand {
                 """,
         )
 
-    @Argument
+    @Argument(
+        help: "The current key of the secret to rename.",
+    )
     var oldKey: String
 
-    @Argument
+    @Argument(
+        help: "The new key to assign to the secret.",
+    )
     var newKey: String
 
     func run() throws {
