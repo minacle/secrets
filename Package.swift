@@ -40,11 +40,17 @@ let package = Package(
                 ),
             ],
             swiftSettings: swiftSettings,
+            plugins: ["SecretsVersionsGeneratorPlugin"],
         ),
         .testTarget(
             name: "SecretsTests",
             dependencies: ["Secrets"],
             swiftSettings: swiftSettings,
+        ),
+        .plugin(
+            name: "SecretsVersionsGeneratorPlugin",
+            capability: .buildTool(),
+            path: "Plugins/VersionsGeneratorPlugin",
         ),
     ],
     swiftLanguageModes: [.v6],

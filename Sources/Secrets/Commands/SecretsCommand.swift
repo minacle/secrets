@@ -12,6 +12,7 @@ struct SecretsCommand: ParsableCommand {
                 Secrets stores values as generic password items in the macOS Keychain.
                 Use the read, write, rename, and delete subcommands to manage values by key.
                 """,
+            version: Versions.current,
             subcommands: [
                 ReadCommand.self,
                 WriteCommand.self,

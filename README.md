@@ -7,11 +7,24 @@ Values are stored as generic password items under the `moe.minacle.secrets` Keyc
 ## Requirements
 
 - macOS 13 or later
-- Swift 6.3 or later
 
 ## Installation
 
-Build the executable with Swift Package Manager:
+Download the installer package for your Mac from
+[GitHub Releases](https://github.com/minacle/secrets/releases):
+
+| Package | Mac |
+| --- | --- |
+| `secrets.pkg` | Apple silicon and Intel |
+
+The signed and notarized package installs `secrets` at `/usr/local/bin/secrets`.
+Open the package in Finder, or install it from Terminal:
+
+```sh
+sudo installer -pkg secrets.pkg -target /
+```
+
+To build from source, install Swift 6.3.3 and run:
 
 ```sh
 swift build -c release
@@ -22,6 +35,9 @@ The compiled binary is available at:
 ```sh
 .build/release/secrets
 ```
+
+Exact release tags report their version through `secrets --version`.
+Development builds report `dev+<short-commit>`.
 
 ## Usage
 
