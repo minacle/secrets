@@ -1,87 +1,31 @@
 # Secrets
 
-Secrets is a small Swift command-line tool for storing and managing secret values in the macOS Keychain.
-
-Values are stored as generic password items under the `moe.minacle.secrets` Keychain service.
-
-## Requirements
-
-- macOS 13 or later
+Secrets is a Swift command-line tool that stores secret values as generic password items in the macOS Keychain under the `moe.minacle.secrets` service. It requires macOS 13 or later.
 
 ## Installation
 
-Download the installer package for your Mac from
-[GitHub Releases](https://github.com/minacle/secrets/releases):
-
-| Package | Mac |
-| --- | --- |
-| `secrets.pkg` | Apple silicon and Intel |
-
-The signed and notarized package installs `secrets` at `/usr/local/bin/secrets`.
-Open the package in Finder, or install it from Terminal:
+Download the signed and notarized universal `secrets.pkg` from [GitHub Releases](https://github.com/minacle/secrets/releases). It supports Apple silicon and Intel Macs and installs `secrets` at `/usr/local/bin/secrets`.
 
 ```sh
 sudo installer -pkg secrets.pkg -target /
 ```
 
-To build from source, install Swift 6.3.3 and run:
+To build from source with Swift 6.3.3:
 
 ```sh
 swift build -c release
 ```
 
-The compiled binary is available at:
-
-```sh
-.build/release/secrets
-```
-
-Exact release tags report their version through `secrets --version`.
-Development builds report `dev+<short-commit>`.
+The binary is written to `.build/release/secrets`.
 
 ## Usage
 
 ```sh
-secrets <subcommand>
-```
-
-### Write a secret
-
-```sh
 secrets write <key> <value>
-```
-
-Writes a value for `key`. If the key already exists, the stored value is replaced.
-
-### Read a secret
-
-```sh
 secrets read <key>
-```
-
-Prints the value stored for `key`.
-
-### Rename a secret
-
-```sh
 secrets rename <old-key> <new-key>
-```
-
-Renames an existing key without changing its stored value.
-
-### Delete a secret
-
-```sh
 secrets delete <key>
+secrets --version
 ```
 
-Deletes the value stored for `key`.
-
-## Examples
-
-```sh
-secrets write api-token "secret-value"
-secrets read api-token
-secrets rename api-token production-api-token
-secrets delete production-api-token
-```
+`write` replaces an existing value for the same key. `read` prints the stored value to standard output, and `rename` changes only the key.
