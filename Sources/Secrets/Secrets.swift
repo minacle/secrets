@@ -1,95 +1,48 @@
-import ArgumentParser
 import Foundation
-import Security
+import KeychainKit
+
+private let keychain = Keychain(storage: .fileBased())
 
 private let service = "moe.minacle.secrets"
 
-func delete(key: String) throws(SecretsError) {
-    let query = [
-        kSecClass: kSecClassGenericPassword,
-        kSecAttrService: service,
-        kSecAttrAccount: key,
-    ] as CFDictionary
-    let status = SecItemDelete(query)
-    guard status == errSecSuccess
-    else {
-        if status == errSecItemNotFound {
-            throw .itemNotFound
-        }
-        throw .unhandledStatus(status)
-    }
+func delete(key: String) throws(KeychainError) {
+    try keychain.delete(matching: firstItemQuery(key: key))
 }
 
-func read(key: String) throws(SecretsError) -> String {
-    let query = [
-        kSecClass: kSecClassGenericPassword,
-        kSecAttrService: service,
-        kSecAttrAccount: key,
-        kSecReturnData: true,
-    ] as CFDictionary
-    var item: CFTypeRef?
-    let status = unsafe SecItemCopyMatching(query, &item)
-    guard status == errSecSuccess
+func read(key: String) throws(KeychainError) -> String {
+    guard let item = try keychain.fetchFirst(matching: Query(service: service, account: key))
     else {
-        if status == errSecItemNotFound {
-            throw .itemNotFound
-        } else {
-            throw .unhandledStatus(status)
-        }
+        throw KeychainError(code: .itemNotFound)
     }
-    guard
-        let data = item as? Data,
-        let value = String(data: data, encoding: .utf8)
+    guard let value = item.password
     else {
-        throw .unexpectedItemType
+        throw KeychainError(code: .decodingFailed)
     }
     return value
 }
 
-func rename(oldKey: String, newKey: String) throws(SecretsError) {
-    let query = [
-        kSecClass: kSecClassGenericPassword,
-        kSecAttrService: service,
-        kSecAttrAccount: oldKey,
-    ] as CFDictionary
-    let attributesToUpdate = [
-        kSecAttrAccount: newKey,
-    ] as CFDictionary
-    let status = SecItemUpdate(query, attributesToUpdate)
-    guard status == errSecSuccess
-    else {
-        if status == errSecItemNotFound {
-            throw .itemNotFound
-        }
-        if status == errSecDuplicateItem {
-            throw .duplicateItem
-        }
-        throw .unhandledStatus(status)
+func rename(oldKey: String, newKey: String) throws(KeychainError) {
+    var changes = Item<GenericPassword>()
+    changes.account = newKey
+    try keychain.update(matching: firstItemQuery(key: oldKey), with: changes)
+}
+
+func write(key: String, value: String) throws(KeychainError) {
+    do {
+        try keychain.add(Item(service: service, account: key, password: value))
+    } catch where error.code == .duplicateItem {
+        var changes = Item<GenericPassword>()
+        changes.password = value
+        try keychain.update(matching: firstItemQuery(key: key), with: changes)
     }
 }
 
-func write(key: String, value: String) throws(SecretsError) {
-    let valueData = value.data(using: .utf8)!
-    let query = [
-        kSecClass: kSecClassGenericPassword,
-        kSecAttrService: service,
-        kSecAttrAccount: key,
-        kSecValueData: valueData,
-    ] as CFDictionary
-    var status = SecItemAdd(query, nil)
-    if status == errSecDuplicateItem {
-        let query = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrService: service,
-            kSecAttrAccount: key,
-        ] as CFDictionary
-        let attributesToUpdate = [
-            kSecValueData: valueData,
-        ] as CFDictionary
-        status = SecItemUpdate(query, attributesToUpdate)
-    }
-    guard status == errSecSuccess
+private func firstItemQuery(key: String) throws(KeychainError) -> Query<GenericPassword> {
+    guard let reference = try keychain.fetchFirstPersistentReference(matching: Query(service: service, account: key))
     else {
-        throw .unhandledStatus(status)
+        throw KeychainError(code: .itemNotFound)
     }
+    var query = Query<GenericPassword>()
+    query.persistentReference = reference
+    return query
 }
