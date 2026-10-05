@@ -29,6 +29,10 @@ let package = Package(
             url: "https://github.com/apple/swift-argument-parser",
             from: "1.8.2",
         ),
+        .package(
+            url: "https://github.com/sinoru/swift-keychain-kit",
+            from: "1.0.0",
+        ),
     ],
     targets: [
         .executableTarget(
@@ -37,6 +41,10 @@ let package = Package(
                 .product(
                     name: "ArgumentParser",
                     package: "swift-argument-parser",
+                ),
+                .product(
+                    name: "KeychainKit",
+                    package: "swift-keychain-kit",
                 ),
             ],
             swiftSettings: swiftSettings,

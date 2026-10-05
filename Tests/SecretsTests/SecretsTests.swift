@@ -1,3 +1,4 @@
+import KeychainKit
 import Testing
 
 @testable
@@ -8,21 +9,21 @@ struct SecretsTests {
 
     @Test
     func `delete non-existing secret`() {
-        #expect(throws: SecretsError.itemNotFound) {
+        #expect(throws: KeychainError(code: .itemNotFound)) {
             try delete(key: "NON_EXISTING_KEY")
         }
     }
 
     @Test
     func `read non-existing secret`() {
-        #expect(throws: SecretsError.itemNotFound) {
+        #expect(throws: KeychainError(code: .itemNotFound)) {
             try read(key: "NON_EXISTING_KEY")
         }
     }
 
     @Test
     func `rename non-existing secret`() {
-        #expect(throws: SecretsError.itemNotFound) {
+        #expect(throws: KeychainError(code: .itemNotFound)) {
             try rename(oldKey: "NON_EXISTING_KEY", newKey: "ANY_KEY")
         }
     }
@@ -55,7 +56,7 @@ struct SecretsTests {
     func `rename a secret to an existing key`() {
         let key1 = "SECRETS_TEST_KEY_ALPHA"
         let key2 = "SECRETS_TEST_KEY_OMEGA"
-        #expect(throws: SecretsError.duplicateItem) {
+        #expect(throws: KeychainError(code: .duplicateItem)) {
             try rename(oldKey: key1, newKey: key2)
         }
     }
@@ -66,10 +67,10 @@ struct SecretsTests {
         let key2 = "SECRETS_TEST_KEY_OMEGA"
         try delete(key: key1)
         try delete(key: key2)
-        #expect(throws: SecretsError.itemNotFound) {
+        #expect(throws: KeychainError(code: .itemNotFound)) {
             try read(key: key1)
         }
-        #expect(throws: SecretsError.itemNotFound) {
+        #expect(throws: KeychainError(code: .itemNotFound)) {
             try read(key: key2)
         }
     }

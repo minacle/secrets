@@ -1,5 +1,5 @@
 {
-  "originHash" : "8d0ea1eb2c0c1265bc2f79cb2285977cb56583680c275826b8a37faf7b6f24f3",
+  "originHash" : "c01a21f4baf633c73902a27db6ded57d72ce8494046c5b8fad1ce9da72ee5740",
   "pins" : [
     {
       "identity" : "swift-argument-parser",
@@ -8,6 +8,24 @@
       "state" : {
         "revision" : "6a52f3251125d74daf04fcbd5e6f08a75d074382",
         "version" : "1.8.2"
+      }
+    },
+    {
+      "identity" : "swift-core-foundation-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sinoru/swift-core-foundation-kit.git",
+      "state" : {
+        "revision" : "3c19a1aa9173b4a8f15b6dde5746f4a3a4f12e4f",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "swift-keychain-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sinoru/swift-keychain-kit",
+      "state" : {
+        "revision" : "c996681488aae920c59b011d7b490a34d7b2b5eb",
+        "version" : "1.0.0"
       }
     }
   ],
